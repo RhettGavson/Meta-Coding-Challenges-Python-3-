@@ -1,0 +1,78 @@
+# This script is meant to take in 4 variables and return the number of additional people that can sit without violating social distancing protocals
+
+# N = seats in the row 1 to N
+# K = social distancing spaces
+# M = number of current diners
+# S = list[seat number of diners]
+def getMaxAdditionalDinersCount(N, K, M, S):
+    if N >= 1 and N <= 10 ** 15:
+        if K >= 1 and K <= N:
+            if M >= 1 and M <= 500000:
+                if M <= N:
+                    if min(S) >= 1 and max(S) <= N:
+                        U = K - 1
+                        seats = [0] * N
+                        count = 0
+                        for x in range(0, len(S)):
+                            seats[int(S[x] - 1)] = 1
+                            if S[x] -1 -K >= 0:
+                                seats[int(S[x] - 1 - K)] = 5
+                                if K > 1:
+                                    D = 1
+                                    while D < K:
+                                        # print("LOWER")
+                                        seats[int(S[x] - 1 - D)] = 5
+                                        D += 1
+                                # print(S[x])
+                                if int(S[x] - 1 + K) < len(seats):
+                                    seats[int(S[x] - 1 + K)] = 5
+                                if int(S[x] - 1 + U) < len(seats) + 1:
+                                    U = 1
+                                    while U < K:
+                                        # print("UPPER")
+                                        seats[int(S[x] - 1 + U)] = 5
+                                        U += 1
+                        #print(seats)
+                        for a in range(0, len(seats)):
+                            # print(a)
+                            # print(seats[a])
+                            if seats[a] == 0:
+                                seats[a] = 2
+                                count += 1
+                                if a - K >= 0:
+                                    seats[a - K] = 5
+                                if K > 1:
+                                    D = 1
+                                    if a - D >= 0:
+                                        while D < K:
+                                            # print("LOWER")
+                                            seats[a - D] = 5
+                                            D += 1
+                                if a + K < len(seats):
+                                    seats[a + K] = 5
+                                if K > 1:
+                                    U = 1
+                                    if a + U < len(seats):
+                                        while U < K:
+                                            # print("UPPER")
+                                            seats[a + U] = 5
+                                            U += 1
+                        # print(seats)
+                        # print(count)
+                        return count
+                    else:
+                        return ("Does not meet constraints")
+                else:
+                    return ("Does not meet constraints")
+            else:
+                return ("Does not meet constraints")
+        else:
+            return ("Does not meet constraints")
+    else:
+        return ("Does not meet constraints")
+
+
+#print (getMaxAdditionalDinersCount(15, 2, 3, [11,6,14]))
+
+a = [1,2,5,12]
+print (a[0])
